@@ -1,0 +1,25 @@
+首先確認有安裝java 並且設定["環境變數"](如果還沒設定好先google一下如何設定)
+開啟cmd，輸入以下指令
+javac -version
+java -version
+
+確認沒問題後再開始進行下面的步驟
+
+===============================
+
+在C槽建立Javalib資料夾
+
+將grun.bat、antlr4.bat、antlr-4.5.2-complete.jar放入  C:\Javalib內
+
+[設定 "環境變數"]
+設定CLASSPATH: 在裡面加入 C:\Javalib\antlr-4.5.2-complete.jar
+設定Path: 在裡面加入 C:\Javalib
+
+
+將所有測資放入testfiles資料夾內，並依序命名為test1.txt、test2.txt、test3.txt  ...
+
+
+到run_antlr4.cpp這個檔案裡將 testFilesPath這個變數 的路徑改為 自己的測試案例所在路徑(即testfiles資料夾的所在路徑)
+
+
+編譯run_antlr4.cpp後，將產生的「run_antlr4.exe」丟入欲測試的檔案資料夾內執行即可。
