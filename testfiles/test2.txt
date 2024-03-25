@@ -1,9 +1,0 @@
-else
-fi
-if
-int
-main
-return
-while
-read
-write
