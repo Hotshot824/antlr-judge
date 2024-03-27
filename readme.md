@@ -2,9 +2,27 @@
 
 This is an simple tool to judge the correctness of the ANTLR grammar file. In order to assist teacher assistants in the CCU compiler design course.
 
+-   [x] ANTLR to generate the parser and lexer.
+-   [x] ANTLR TestRig to print the parse tree.
+-   [ ] Using the Java code to generate the parse tree.
+-   [ ] Using the C++ code to generate the parse tree.
+-   [ ] Travesal the parse tree using the visitor pattern Java/C++ code.
+
+Currently, the tool using `diff` to compare the parse tree string, spilit the string by the newline character, and compare the string line by line.
+
+#### Requirements
+
+-   Linux
+-   ANTLR jar file > 4.9.2
+-   Java JDK > 17
+-   clang++ > 12.0.0
+-   make > 4.3
+
 ---
 
 ### Usage
+
+Create the missing directories and put in required files.
 
 File Structure:
 ```bash

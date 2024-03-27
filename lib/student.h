@@ -17,10 +17,10 @@ public:
     std::vector<std::string> get_testcases() { return testcases; }
 
 protected:
-    std::string assignment_path = "./assignments";
     std::vector<std::string> ids;
-    std::string testcases_path = "./testcases";
     std::vector<std::string> testcases;
+    std::string assignment_path = "./assignments";
+    std::string testcases_path = "./testcases";
     void __set_ids(std::string path = "./assignments");
     void __set_testcases(std::string path = "./testcases");
 };
