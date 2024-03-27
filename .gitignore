@@ -43,3 +43,4 @@ generated-files/
 results/
 javalib/*
 testcases/
+correct/
