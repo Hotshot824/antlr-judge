@@ -26,7 +26,7 @@ void Judge::antlr_generate() {
 /*
  * Judge the parse tree of each assignment.
  */
-void Judge::antlr_parse_tree_judge() {
+void Judge::antlr_parser_tree_judge() {
     switch (Judge::antlr_generate_language) {
         case Judge::AntlrLanguage::Java:
             Judge::__java_parser_tree_judge();
@@ -36,5 +36,13 @@ void Judge::antlr_parse_tree_judge() {
             break;
         default:
             break;
+    }
+}
+
+void Judge::set_parser_language(std::string language) {
+    if (language == "Cpp") {
+        Judge::antlr_generate_language = Judge::AntlrLanguage::Cpp;
+    } else {
+        Judge::antlr_generate_language = Judge::AntlrLanguage::Java;
     }
 }

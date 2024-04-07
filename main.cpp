@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
   Judge autoJudge;
   autoJudge.antlr_generate();
-  autoJudge.antlr_parse_tree_judge();
+  autoJudge.antlr_parser_tree_judge();
 
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = end - start;

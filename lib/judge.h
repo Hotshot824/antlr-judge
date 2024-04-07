@@ -16,7 +16,8 @@ class Judge {
 public:
     Judge();
     void antlr_generate();
-    void antlr_parse_tree_judge();
+    void antlr_parser_tree_judge();
+    void set_parser_language(std::string language);
 
 private:
     enum class AntlrLanguage {
