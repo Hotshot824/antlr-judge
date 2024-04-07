@@ -28,6 +28,7 @@ File Structure:
 ```bash
 .
 ├── assignments ── ${student_id} ── ${grammar_files}
+├── correct ── result ── ${testcase_expected_result}
 ├── generated-files (ANTLR generated files)
 ├── javalib (Java library)
 ├── makefile
