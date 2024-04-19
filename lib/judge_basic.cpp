@@ -41,6 +41,17 @@ std::string Judge::__language_to_string() {
     }
 }
 
+/*
+ * Main function to cpp parser tree judge, Write the result to the result directory.
+ * Not implemented yet.
+ */
+void Judge::__cpp_parser_tree_judge() {
+    std::cout << "Cpp parser tree is not implemented yet" << std::endl;
+}
+
+/*
+ * Main function to java parser tree judge, Write the result to the result directory.
+ */
 void Judge::__java_parser_tree_judge() {
     for (auto& id : Judge::students.get_ids()) {
         std::cout << "Judging parse tree for " << id << std::endl;
@@ -77,10 +88,6 @@ void Judge::__java_parser_tree_judge() {
     }
 }
 
-void Judge::__cpp_parser_tree_judge() {
-    std::cout << "Cpp parser tree is not implemented yet" << std::endl;
-}
-
 /*
  * Find the ANTLR .jar file in the javalib directory, return the name of the file.
  */
@@ -113,6 +120,7 @@ std::string Judge::__compiler(std::string path) {
 }
 
 /*
+ * Execute the TestRig command to parse the tree, return the stdout and stderr.
  * Command format:
  * java -cp $CLASSPATH:$ANTLR_JAR org.antlr.v4.gui.TestRig $LANGUAGE $START_RULE -tree < $TESTCASE
  */
