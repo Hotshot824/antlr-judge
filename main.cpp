@@ -9,8 +9,11 @@ int main(int argc, char* argv[]) {
   auto start = std::chrono::high_resolution_clock::now();
 
   Judge autoJudge;
+  autoJudge.set_start_rule("program");
+  autoJudge.set_parser_tree(false);
+
   autoJudge.antlr_generate();
-  autoJudge.antlr_parser_tree_judge();
+  autoJudge.antlr_judge();
 
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = end - start;

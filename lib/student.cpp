@@ -45,4 +45,23 @@ void Student::__set_testcases(std::string path) {
             testcases.push_back(filename);
         }
     }
+
+    std::sort(testcases.begin(), testcases.end(), Student::__numericSort);
+}
+
+bool Student::__numericSort(std::string &a, std::string &b) {
+    // Regular expression to extract the number from the filename
+    std::regex re("test(\\d+)\\.txt");
+    std::smatch matchA, matchB;
+
+    // Extract number from a
+    if (std::regex_search(a, matchA, re)) {
+        int numA = std::stoi(matchA[1]);
+        // Extract number from b
+        if (std::regex_search(b, matchB, re)) {
+            int numB = std::stoi(matchB[1]);
+            return numA < numB;
+        }
+    }
+    return false;
 }

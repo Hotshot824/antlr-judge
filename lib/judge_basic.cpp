@@ -1,3 +1,8 @@
+/*
+* judge_basic.cpp is stored the basic unit functions for the judge class,
+* Like the langeuage to string translation, ANTLR environment check, and the parser tree judge.
+*/
+
 #include "judge.h"
 
 /*
@@ -45,14 +50,14 @@ std::string Judge::__language_to_string() {
  * Main function to cpp parser tree judge, Write the result to the result directory.
  * Not implemented yet.
  */
-void Judge::__cpp_parser_tree_judge() {
+void Judge::__cpp_judge() {
     std::cout << "Cpp parser tree is not implemented yet" << std::endl;
 }
 
 /*
  * Main function to java parser tree judge, Write the result to the result directory.
  */
-void Judge::__java_parser_tree_judge() {
+void Judge::__java_judge() {
     for (auto& id : Judge::students.get_ids()) {
         std::cout << "Judging parse tree for " << id << std::endl;
 
@@ -64,11 +69,11 @@ void Judge::__java_parser_tree_judge() {
         Judge::__exec_command(("echo -n "" > " + result_file).c_str());
 
         // Compile the generated files
-        Judge::__compiler(gen_path);
+        Judge::__javac_compiler(gen_path);
 
         // Test each test case then write the output to the result directory
         for (auto& testcase : Judge::students.get_testcases()) {
-            auto [stdout, stderr] = Judge::__parse_tree(gen_path, testcase);
+            auto [stdout, stderr] = Judge::__run_antlr(gen_path, testcase);
 
             // Replace space with newline
             stdout = StringUtils::replace(stdout, " ", "\n");
@@ -114,7 +119,7 @@ std::string Judge::__generate(std::string output_path, std::string g4) {
  * Command format:
  * javac $PATH/asterisk.java
  */
-std::string Judge::__compiler(std::string path) {
+std::string Judge::__javac_compiler(std::string path) {
     std::string command = "javac " + path + "/*.java";
     return Judge::__exec_command(command.c_str());
 }
@@ -124,11 +129,16 @@ std::string Judge::__compiler(std::string path) {
  * Command format:
  * java -cp $CLASSPATH:$ANTLR_JAR org.antlr.v4.gui.TestRig $LANGUAGE $START_RULE -tree < $TESTCASE
  */
-std::pair<std::string, std::string> Judge::__parse_tree(std::string path, std::string testcase) {
+std::pair<std::string, std::string> Judge::__run_antlr(std::string path, std::string testcase) {
     std::string command = "echo -n "" > " + path + "/error.txt";
     Judge::__exec_command(command.c_str());
 
-    command = "java -cp " + path + ":" + Judge::antlr + " " + Judge::grun + " " + Judge::language + " " + Judge::start_rule + " -tree < testcases/" + testcase + " 2> " + path + "/error.txt";
+    if (Judge::parser_tree) {
+        command = "java -cp " + path + ":" + Judge::antlr + " " + Judge::grun + " " + Judge::language + " " + Judge::start_rule + " -tree < testcases/" + testcase + " 2> " + path + "/error.txt";
+    } else {
+        command = "java -cp " + path + ":" + Judge::antlr + " " + Judge::grun + " " + Judge::language + " " + Judge::start_rule + " < testcases/" + testcase + " 2> " + path + "/error.txt";
+    }
+
     std::string stdout = Judge::__exec_command(command.c_str());
     std::string stderr = Judge::__exec_command(("cat " + path + "/error.txt").c_str());
 

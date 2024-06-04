@@ -1,3 +1,8 @@
+/*
+* judge.cpp storage the top level function for the judge class, 
+* all public calls to the judge class are made through this file.
+*/
+
 #include "judge.h"
 
 Judge::Judge() {
@@ -26,13 +31,13 @@ void Judge::antlr_generate() {
 /*
  * Judge the parse tree of each assignment.
  */
-void Judge::antlr_parser_tree_judge() {
+void Judge::antlr_judge() {
     switch (Judge::antlr_generate_language) {
         case Judge::AntlrLanguage::Java:
-            Judge::__java_parser_tree_judge();
+            Judge::__java_judge();
             break;
         case Judge::AntlrLanguage::Cpp:
-            Judge::__cpp_parser_tree_judge();
+            Judge::__cpp_judge();
             break;
         default:
             break;
@@ -45,4 +50,16 @@ void Judge::set_parser_language(std::string language) {
     } else {
         Judge::antlr_generate_language = Judge::AntlrLanguage::Java;
     }
+}
+
+void Judge::set_parser_tree(bool type) {
+    Judge::parser_tree = type;
+}
+
+void Judge::set_language(std::string language) {
+    Judge::language = language;
+}
+
+void Judge::set_start_rule(std::string start_rule) {
+    Judge::start_rule = start_rule;
 }

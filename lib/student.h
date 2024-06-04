@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <regex>
 
 namespace fs = std::filesystem;
 
@@ -35,6 +36,8 @@ protected:
     
     void __set_ids(std::string path = "./assignments");
     void __set_testcases(std::string path = "./testcases");
+
+    static bool __numericSort(std::string &a, std::string &b);
 };
 
 #endif  // STUDENT_H
