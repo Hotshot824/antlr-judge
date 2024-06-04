@@ -56,6 +56,10 @@ void Judge::set_parser_tree(bool type) {
     Judge::parser_tree = type;
 }
 
+void Judge::set_replace_ws(bool type) {
+    Judge::replace_ws = type;
+}
+
 void Judge::set_language(std::string language) {
     Judge::language = language;
 }

@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
   Judge autoJudge;
   autoJudge.set_start_rule("program");
   autoJudge.set_parser_tree(false);
+  autoJudge.set_replace_ws(false);
 
   autoJudge.antlr_generate();
   autoJudge.antlr_judge();

@@ -76,7 +76,9 @@ void Judge::__java_judge() {
             auto [stdout, stderr] = Judge::__run_antlr(gen_path, testcase);
 
             // Replace space with newline
-            stdout = StringUtils::replace(stdout, " ", "\n");
+            if (Judge::replace_ws) {
+                stdout = StringUtils::replace(stdout, " ", "\n");
+            }
 
             // Write the output to the result directory
             std::ofstream outputFile(result_path + "/" + testcase);

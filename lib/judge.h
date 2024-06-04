@@ -25,6 +25,7 @@ public:
     void antlr_judge();
     void set_parser_language(std::string language);
     void set_parser_tree(bool type);
+    void set_replace_ws(bool type);
 
     // Customize parser target language
     void set_language(std::string language);
@@ -42,6 +43,7 @@ private:
     std::string language = "Cactus";
     std::string start_rule = "token";
     bool parser_tree = false;
+    bool replace_ws = false;
 
     // ANTLR executable environment
     std::string grun = "org.antlr.v4.gui.TestRig";
