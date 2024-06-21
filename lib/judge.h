@@ -2,10 +2,16 @@
 #define JUDGE_H
 
 #include <cstdlib>
+
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <vector>
+#include <string>
+
+#include <thread>
+#include <future>
+
 
 #include "string_utils.cpp"
 #include "student.h"
@@ -57,6 +63,7 @@ private:
     // Basic functions
     std::string __language_to_string();
     std::string __exec_command(const char* cmd);
+    std::string __exec_command_timeout(const char* cmd, int timeout_seconds);
     std::string __generate(std::string path, std::string g4);
     std::string __javac_compiler(std::string path);
 

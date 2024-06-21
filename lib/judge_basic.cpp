@@ -1,7 +1,7 @@
 /*
-* judge_basic.cpp is stored the basic unit functions for the judge class,
-* Like the langeuage to string translation, ANTLR environment check, and the parser tree judge.
-*/
+ * judge_basic.cpp is stored the basic unit functions for the judge class,
+ * Like the langeuage to string translation, ANTLR environment check, and the parser tree judge.
+ */
 
 #include "judge.h"
 
@@ -66,7 +66,10 @@ void Judge::__java_judge() {
         std::string result_path = Judge::students.get_result_path() + "/" + id;
         std::string result_file = result_path + "/diff.txt";
         fs::create_directories(result_path);
-        Judge::__exec_command(("echo -n "" > " + result_file).c_str());
+        Judge::__exec_command(("echo -n "
+                               " > " +
+                               result_file)
+                                  .c_str());
 
         // Compile the generated files
         Judge::__javac_compiler(gen_path);
@@ -83,11 +86,35 @@ void Judge::__java_judge() {
             // Write the output to the result directory
             std::ofstream outputFile(result_path + "/" + testcase);
             if (outputFile.is_open()) {
-                outputFile << stderr;
+                // outputFile << stderr;
                 outputFile << stdout;
                 outputFile.close();
+
                 Judge::__exec_command(("echo Testcase " + testcase + " start. >> " + result_file).c_str());
-                Judge::__exec_command(("diff --suppress-common-lines " + Judge::students.get_correct_path() + "/result/" + testcase + " " + result_path + "/" + testcase + " >> " + result_file).c_str());
+
+                std::ofstream outputFile(result_file, std::ios_base::app);
+                if (outputFile.is_open()) {
+                    outputFile << stderr;
+                    outputFile << "Finished parsing " << testcase << std::endl;
+                    outputFile.close();
+                }
+
+                int timeout_seconds = 2;
+                // Judge::__exec_command(("diff --suppress-common-lines " + Judge::students.get_correct_path() + "/result/" + testcase + " " + result_path + "/" + testcase + " >> " + result_file).c_str());
+                try {
+                    if (testcase == "test3.txt" || testcase == "test18.txt") {
+                        Judge::__exec_command_timeout(("spim -file " + result_path + "/" + testcase + " < testcases/input/" + testcase + ".input > ./temp.txt 2> ./error.txt").c_str(), timeout_seconds);
+                    } else {
+                        Judge::__exec_command_timeout(("spim -file " + result_path + "/" + testcase + " > ./temp.txt 2> ./error.txt").c_str(), timeout_seconds);
+                    }
+                } catch (const std::exception& e) {
+                    Judge::__exec_command(R"(echo "Time Limit Exceeded." >> ./error.txt)");
+                }
+                Judge::__exec_command(("cat ./error.txt >> " + result_file).c_str());
+                Judge::__exec_command(("cat ./temp.txt >> " + result_file).c_str());
+                Judge::__exec_command("rm ./temp.txt ./error.txt");
+                Judge::__exec_command(("echo -e \"\\n\" >> " + result_file).c_str());
+
             } else {
                 exit(1);
             }
@@ -132,7 +159,10 @@ std::string Judge::__javac_compiler(std::string path) {
  * java -cp $CLASSPATH:$ANTLR_JAR org.antlr.v4.gui.TestRig $LANGUAGE $START_RULE -tree < $TESTCASE
  */
 std::pair<std::string, std::string> Judge::__run_antlr(std::string path, std::string testcase) {
-    std::string command = "echo -n "" > " + path + "/error.txt";
+    std::string command =
+        "echo -n "
+        " > " +
+        path + "/error.txt";
     Judge::__exec_command(command.c_str());
 
     if (Judge::parser_tree) {
@@ -165,4 +195,36 @@ std::string Judge::__exec_command(const char* cmd) {
     }
     pclose(pipe);
     return result;
+}
+
+std::string executeCommand(const char* cmd) {
+    char buffer[128];
+    std::string result = "";
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    try {
+        while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+            result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
+
+/*
+ * Execute a command with timeout and return the output.
+ */
+std::string Judge::__exec_command_timeout(const char* cmd, int timeout_seconds) {
+    std::packaged_task<std::string()> task([cmd]() { return executeCommand(cmd); });
+    std::future<std::string> result = task.get_future();
+    std::thread(std::move(task)).detach();
+
+    if (result.wait_for(std::chrono::seconds(timeout_seconds)) == std::future_status::timeout) {
+        throw std::runtime_error("Command timed out");
+    }
+
+    return result.get();
 }
